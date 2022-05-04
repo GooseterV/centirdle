@@ -4,7 +4,7 @@ function load() {
 	const wrapper = document.getElementById("centirdle-boards");
 	wrapper.replaceChildren(...supplyRow());
 	paginate(1);
-	//for (let word of window.CENTIRDLE.guesses) setTimeout(()=>{window.CENTIRDLE.writeGuess(word)}, 10);
+	for (let word of window.CENTIRDLE.guesses) setTimeout(()=>{window.CENTIRDLE.writeGuess(word)}, 10);
 	(Array(...document.getElementsByClassName("keyboard-row")).map( i => Array(...i.children)).flat(Infinity)).forEach(
 		x => {
 			const f = x.id !== "enter-key" && x.id !== "delete-key" && x.id !== "arrow-left-key" && x.id !== "arrow-right-key" ? ()=>{
