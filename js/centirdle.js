@@ -41,6 +41,7 @@ class Centirdle {
 		this.keypress = (word) => {
 			const words = Array(...document.getElementsByClassName("board")).map( (i) => i.children[this.num_guessed]);
 			for (let row of words) {
+				if (Array(...row.parentElement.classList).includes("board-solved")) continue;
 				for (let i = 0; i < word.length; i++) {
 					row.children[i].innerHTML = word[i];
 				};
@@ -51,6 +52,7 @@ class Centirdle {
 		this.delete_key = () => {
 			const words = Array(...document.getElementsByClassName("board")).map( (i) => i.children[this.num_guessed]);
 			for (let row of words) {
+				if (Array(...row.parentElement.classList).includes("board-solved")) continue;
 				row.children[this.key_index-1].innerHTML = "";
 			};
 			if (this.key_index > 0) this.key_index -= 1;
@@ -60,6 +62,7 @@ class Centirdle {
 
 		this.enter_word = () => {
 			if (this.guesses.includes(this.to_enter.toLowerCase())) return this.createWarning("Word already guessed you sillyhead!");
+			if (!WORDS.includes(this.to_enter.toLowerCase())) return this.createWarning("Word is not a valid word in the word bank!");
 			let w = this.to_enter;
 
 			for (let i = 0; i < 5; i++) this.delete_key();
@@ -82,6 +85,12 @@ class Centirdle {
 	};
 
 	createWarning(text) {
+		const alertBox = document.getElementById("alert");
+		alertBox.innerText = text;
+		alertBox.className = "visible bottom-45"
+		setTimeout(()=>{
+			alertBox.className = "hidden";
+		}, 1750);
 
 	};
 
@@ -229,9 +238,9 @@ class Centirdle {
 
 	evalWord(word) {
 		console.log(word)
-		if (!WORDS.includes(word)) return alert("Word not in valid word bank!");
-		if (word.length !== 5) return alert("Word must be 5 characters long!");
-		if (this.num_guesses_remaining === 0 || this.num_guessed === 105) return alert("No more guesses remaining!");
+		if (!WORDS.includes(word)) return this.createWarning("Word not in valid word bank!");
+		if (word.length !== 5) return this.createWarning("Word must be 5 characters long!");
+		if (this.num_guesses_remaining === 0 || this.num_guessed === 105) return this.createWarning("No more guesses remaining!");
 		/*
 
 		let data = {};

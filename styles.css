@@ -151,11 +151,13 @@ body {
 }
 
 #keyboard-holder {
-	position:absolute;
+	position:fixed;
 	display:flex;
-	left:0;
-	bottom:0;
+	left:0px;
+	right:0px;
+	bottom:0px;;
 	width:100%;
+
 	background-color:#527adf;
 	border-top-left-radius: clamp(1vmin, 2vmin, 1vmax);
 	border-top-right-radius: clamp(1vmin, 2vmin, 1vmax);
@@ -229,7 +231,7 @@ body {
 #alert {
 	z-index:10;
 	position:absolute;
-	bottom:45%;
+	bottom:150%;
 	left:50%;
 	transform:translate(-50%, -50%);
 	width:fit-content;
@@ -245,19 +247,22 @@ body {
 	display:flex;
 	font-family:'Montserrat' !important;
 	color:aliceblue;
-	display:none;
+	transition:all 1.5s ease-in-out;
 }
 
+.bottom-45 {
+	bottom:45% !important;
+}
 
 @media screen and (max-width:440px) {
 	.keyboard-row div {
-		padding:2px;
-		width:50px;
-		height:50px;
+		padding:1px;
+		width:25px;
+		height:25px;
 	}
 
 	#keyboard {
-		font-size:45px;
+		font-size:20px;
 	}
 	.material-icons {
 		font-size: clamp(1em, 3vmax, 2em) !important;

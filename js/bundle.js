@@ -4,7 +4,25 @@ function load() {
 	const wrapper = document.getElementById("centirdle-boards");
 	wrapper.replaceChildren(...supplyRow());
 	paginate(1);
-	for (let word of window.CENTIRDLE.guesses) setTimeout(()=>{window.CENTIRDLE.writeGuess(word)}, 10);
+	for (let word of window.CENTIRDLE.guesses) setTimeout(()=>{window.CENTIRDLE.writeGuess(word)}, 5);
+	const f = (e)=>{
+		if (CENTIRDLE.guesses_remaining <= 0 && !e.code.includes("Arrow")) return CENTIRDLE.createWarning("No more guesses!");
+		if (e.code === "Enter") {
+			if (CENTIRDLE.to_enter.length === 5 || CENTIRDLE.num_solved === 105) CENTIRDLE.enter_word();
+		} else if (e.code === "Backspace") {
+			if (CENTIRDLE.key_index > 0) CENTIRDLE.delete_key();
+		} else if (e.code === "ArrowRight") {
+			if (CENTIRDLE.page_num < 10) paginate(CENTIRDLE.page_num+1);
+		} else if (e.code === "ArrowLeft") {
+			if (CENTIRDLE.page_num > 1) paginate(CENTIRDLE.page_num-1);
+		} else if (String.fromCharCode(e.keyCode).match(/(\w|\s)/g)) {
+			if (CENTIRDLE.key_index < 5) CENTIRDLE.add_key(e.key.toUpperCase());
+			CENTIRDLE.keypress(CENTIRDLE.to_enter);
+		} else {
+			CENTIRDLE.createWarning("Key not recognized!");
+		};
+	};
+	document.addEventListener("keydown", f);
 	(Array(...document.getElementsByClassName("keyboard-row")).map( i => Array(...i.children)).flat(Infinity)).forEach(
 		x => {
 			const f = x.id !== "enter-key" && x.id !== "delete-key" && x.id !== "arrow-left-key" && x.id !== "arrow-right-key" ? ()=>{
